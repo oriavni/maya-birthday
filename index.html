@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="ברכת יום הולדת למאיה">
+    <title>מזל טוב מאיה</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lunasima:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="page" aria-label="ברכת יום הולדת למאיה">
+      <section class="card" aria-label="ברכת יום הולדת למאיה">
+        <button class="back-button" type="button" aria-label="חזרה">
+          חזרה
+        </button>
+
+        <div class="photo-stage" aria-label="תמונה של מאיה">
+          <div class="doodle-frame" aria-hidden="true"></div>
+          <img class="photo" src="assets/maya.jpg" alt="מאיה">
+        </div>
+
+        <video
+          class="preview"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          aria-label="תצוגה מקדימה של סרטון יום הולדת"
+        ></video>
+
+        <button class="folder-button" type="button">
+          סרטונים אישיים
+        </button>
+
+        <div class="password-toast" role="dialog" aria-modal="true" aria-labelledby="password-title" hidden>
+          <form class="password-form">
+            <button class="toast-close" type="button" aria-label="סגירה">×</button>
+            <p id="password-title" class="toast-title">הכניסו סיסמה</p>
+            <div class="password-slots" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <input
+              id="videos-password"
+              class="password-input"
+              type="password"
+              autocomplete="off"
+              inputmode="text"
+              maxlength="7"
+              aria-label="סיסמה לסרטונים אישיים"
+              aria-describedby="password-message"
+            >
+            <button class="password-submit" type="submit">פתיחה</button>
+            <p id="password-message" class="password-message" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

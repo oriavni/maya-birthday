@@ -1,0 +1,356 @@
+:root {
+  --orange: #f07b21;
+  --orange-dark: #d96312;
+  --ink: #231f20;
+  --paper: #fffdf8;
+  --shadow: rgba(83, 47, 20, 0.16);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  min-width: 320px;
+  margin: 0;
+  overflow: hidden;
+  background: var(--paper);
+}
+
+body {
+  min-height: 100svh;
+  color: var(--ink);
+  font-family: "Lunasima";
+}
+
+button {
+  font: inherit;
+}
+
+input {
+  font: inherit;
+}
+
+.page {
+  position: relative;
+  display: grid;
+  width: 100%;
+  height: 100svh;
+  place-items: center;
+  overflow: hidden;
+  background: #f7fbfd;
+}
+
+.card {
+  position: relative;
+  z-index: 1;
+  width: min(100vw, 475px);
+  height: 100svh;
+  max-height: 960px;
+  overflow: hidden;
+  background: var(--paper);
+}
+
+.card::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  content: "";
+  background: url("assets/maya-website-bg.svg") center / 100% 100% no-repeat;
+  transform: scale(1.008);
+  transform-origin: center;
+  animation: artwork-drift 11s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.back-button {
+  position: absolute;
+  top: max(10px, env(safe-area-inset-top));
+  left: clamp(10px, 3vw, 18px);
+  z-index: 3;
+  min-height: 24px;
+  padding: 0 9px 1px;
+  border: 1.5px solid rgba(217, 99, 18, 0.72);
+  border-radius: 999px;
+  color: var(--orange-dark);
+  background: rgba(255, 253, 248, 0.62);
+  box-shadow: 0 3px 8px rgba(89, 53, 26, 0.08);
+  cursor: pointer;
+  font-size: clamp(0.72rem, 2.8vw, 0.9rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0;
+  backdrop-filter: blur(2px);
+  touch-action: manipulation;
+}
+
+.photo-stage {
+  position: absolute;
+  z-index: 2;
+  top: 25.2%;
+  left: 50%;
+  display: grid;
+  width: min(78vw, 365px);
+  aspect-ratio: 0.83;
+  place-items: center;
+  transform: translateX(-50%);
+  animation: photo-float 5.6s ease-in-out infinite;
+}
+
+.doodle-frame {
+  display: none;
+}
+
+.photo {
+  position: relative;
+  width: 82%;
+  height: 82%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 10px;
+  filter: grayscale(1) contrast(1.08);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.1);
+  background:
+    linear-gradient(135deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.02)),
+    #ece8e0;
+  opacity: 0;
+}
+
+.photo.is-loaded {
+  opacity: 1;
+}
+
+.preview {
+  position: absolute;
+  z-index: 2;
+  top: 71.5%;
+  left: 50%;
+  display: block;
+  width: min(66vw, 310px);
+  aspect-ratio: 16 / 9;
+  border: 2px solid var(--orange);
+  border-radius: clamp(8px, 2.2vw, 12px);
+  background: rgba(20, 16, 13, 0.9);
+  box-shadow: 0 8px 18px rgba(89, 53, 26, 0.13);
+  object-fit: contain;
+  transform: translateX(-50%);
+}
+
+.folder-button {
+  position: absolute;
+  z-index: 2;
+  bottom: max(4.8svh, env(safe-area-inset-bottom));
+  left: 50%;
+  min-width: min(53vw, 245px);
+  min-height: clamp(31px, 4.1svh, 38px);
+  padding: 0 clamp(10px, 3.4vw, 20px);
+  border: 2px solid var(--orange-dark);
+  border-radius: 999px;
+  color: #fff;
+  background: var(--orange);
+  box-shadow:
+    0 5px 0 var(--orange-dark),
+    0 10px 16px rgba(105, 54, 16, 0.14);
+  cursor: pointer;
+  font-size: clamp(0.82rem, 3.9vw, 1.25rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+  text-align: center;
+  white-space: nowrap;
+  touch-action: manipulation;
+  transform: translateX(-50%);
+  transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+
+.folder-button:active {
+  transform: translate(-50%, 5px) rotate(-0.5deg);
+  box-shadow:
+    0 3px 0 var(--orange-dark),
+    0 8px 14px rgba(105, 54, 16, 0.14);
+}
+
+.folder-button:focus-visible {
+  outline: 4px solid rgba(94, 184, 225, 0.72);
+  outline-offset: 4px;
+}
+
+.password-toast {
+  position: absolute;
+  right: clamp(22px, 9vw, 42px);
+  bottom: max(12px, env(safe-area-inset-bottom));
+  left: clamp(22px, 9vw, 42px);
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  padding: 10px 12px;
+  border: 2px solid rgba(217, 99, 18, 0.72);
+  border-radius: 18px;
+  background: rgba(255, 253, 248, 0.94);
+  box-shadow: 0 16px 38px rgba(83, 47, 20, 0.22);
+  transform: translateY(12px);
+  animation: toast-in 180ms ease-out forwards;
+}
+
+.password-toast[hidden] {
+  display: none;
+}
+
+.password-form {
+  position: relative;
+  display: grid;
+  width: 100%;
+  justify-items: center;
+  gap: 9px;
+}
+
+.toast-close {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  display: grid;
+  width: 27px;
+  height: 27px;
+  place-items: center;
+  border: 1px solid rgba(217, 99, 18, 0.45);
+  border-radius: 999px;
+  color: var(--orange-dark);
+  background: rgba(255, 255, 255, 0.78);
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.toast-title {
+  margin: 0;
+  color: var(--orange-dark);
+  font-size: clamp(0.86rem, 3.6vw, 1rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.password-slots {
+  direction: ltr;
+  display: grid;
+  width: min(100%, 252px);
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.password-slots span {
+  display: grid;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1.5px solid rgba(217, 99, 18, 0.7);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--orange-dark);
+  box-shadow: inset 0 1px 2px rgba(105, 54, 16, 0.08);
+  font-size: clamp(0.92rem, 4vw, 1.15rem);
+  font-weight: 700;
+}
+
+.password-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0.01;
+  pointer-events: none;
+}
+
+.password-submit {
+  min-height: 28px;
+  padding: 0 20px;
+  border: 2px solid var(--orange-dark);
+  border-radius: 999px;
+  color: #fff;
+  background: var(--orange);
+  box-shadow: 0 4px 0 var(--orange-dark);
+  cursor: pointer;
+  font-size: clamp(0.82rem, 3.5vw, 0.94rem);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.password-message {
+  min-height: 1em;
+  margin: 0;
+  color: var(--orange-dark);
+  font-size: clamp(0.58rem, 2.3vw, 0.72rem);
+  font-weight: 400;
+  line-height: 1;
+  text-align: center;
+}
+
+@media (max-height: 760px) {
+  .photo-stage {
+    top: 23.5%;
+    width: min(70vw, 292px);
+  }
+
+  .preview {
+    top: 71%;
+    width: min(64vw, 270px);
+  }
+
+  .folder-button {
+    min-height: 31px;
+    font-size: clamp(0.95rem, 4.2vw, 1.3rem);
+  }
+
+  .password-toast {
+    padding: 10px;
+  }
+}
+
+@media (min-width: 700px) {
+  .card {
+    border-inline: 1px solid rgba(240, 123, 33, 0.16);
+    box-shadow: 0 0 42px rgba(65, 49, 34, 0.08);
+  }
+}
+
+@keyframes artwork-drift {
+  0% {
+    transform: translate3d(-2px, -4px, 0) rotate(-0.12deg) scale(1.008);
+  }
+
+  50% {
+    transform: translate3d(2px, 2px, 0) rotate(0.1deg) scale(1.014);
+  }
+
+  100% {
+    transform: translate3d(2px, 4px, 0) rotate(0.14deg) scale(1.012);
+  }
+}
+
+@keyframes photo-float {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0) rotate(0);
+  }
+
+  50% {
+    transform: translateX(-50%) translateY(4px) rotate(-0.45deg);
+  }
+}
+
+@keyframes toast-in {
+  to {
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
+}
