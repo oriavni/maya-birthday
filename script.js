@@ -1,5 +1,5 @@
 const DROPBOX_FOLDER_URL = "https://www.dropbox.com/scl/fo/kflhaofy4irom5vztyz0q/AIiTjARjBpqNaPx9JrbEctg?rlkey=tgx39uh0lthyh0cpid2ha46iu&dl=0";
-const PREVIEW_VIDEO_URL = "https://www.dropbox.com/scl/fi/nk3atva2eue6aj52w9pfb/0c8a90a7-69db-41db-9fbf-38a2e451706f.MP4?rlkey=wobgyoaxxp8mcprith5g08212&raw=1";
+const PREVIEW_VIDEO_URL = "https://www.dropbox.com/scl/fi/eub3nismjprrsg8dqwsch/maya-s-bd-shorts-greeting-HD-1080p.mov?rlkey=5wbj8gy8g1besuy3tkhorvggq&raw=1";
 const VIDEOS_PASSWORD = "arialia";
 
 const backButton = document.querySelector(".back-button");
