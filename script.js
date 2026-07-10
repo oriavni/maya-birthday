@@ -84,12 +84,111 @@ passwordForm.addEventListener("submit", (event) => {
   closePasswordToast();
 });
 
-previewVideo.addEventListener("click", async () => {
-  previewVideo.muted = !previewVideo.muted;
+const restartVideo = () => {
+  try {
+    previewVideo.currentTime = 0;
+  } catch {
+    previewVideo.load();
+  }
+};
 
+const playVideo = async () => {
   try {
     await previewVideo.play();
   } catch {
     previewVideo.muted = true;
+    await previewVideo.play();
+  }
+};
+
+const isVideoFullscreen = () =>
+  document.fullscreenElement === previewVideo ||
+  document.webkitFullscreenElement === previewVideo ||
+  previewVideo.webkitDisplayingFullscreen;
+
+const enterVideoFullscreen = async () => {
+  if (previewVideo.requestFullscreen) {
+    await previewVideo.requestFullscreen();
+    return;
+  }
+
+  if (previewVideo.webkitRequestFullscreen) {
+    previewVideo.webkitRequestFullscreen();
+    return;
+  }
+
+  if (previewVideo.webkitEnterFullscreen) {
+    previewVideo.webkitEnterFullscreen();
+  }
+};
+
+const exitVideoFullscreen = async () => {
+  if (document.exitFullscreen && document.fullscreenElement) {
+    await document.exitFullscreen();
+    return;
+  }
+
+  if (document.webkitExitFullscreen && document.webkitFullscreenElement) {
+    document.webkitExitFullscreen();
+    return;
+  }
+
+  if (previewVideo.webkitExitFullscreen && previewVideo.webkitDisplayingFullscreen) {
+    previewVideo.webkitExitFullscreen();
+  }
+};
+
+const startVideoWithAudio = async () => {
+  restartVideo();
+  previewVideo.muted = false;
+  previewVideo.volume = 1;
+  await playVideo();
+};
+
+const returnToPreviewLoop = async () => {
+  await exitVideoFullscreen();
+  previewVideo.muted = true;
+  await playVideo();
+};
+
+let videoClickTimer;
+
+previewVideo.addEventListener("click", () => {
+  window.clearTimeout(videoClickTimer);
+  videoClickTimer = window.setTimeout(startVideoWithAudio, 220);
+});
+
+previewVideo.addEventListener("dblclick", async (event) => {
+  event.preventDefault();
+  window.clearTimeout(videoClickTimer);
+
+  if (isVideoFullscreen()) {
+    await returnToPreviewLoop();
+    return;
+  }
+
+  restartVideo();
+  previewVideo.muted = false;
+  previewVideo.volume = 1;
+  try {
+    await previewVideo.play();
+    await enterVideoFullscreen();
+  } catch {
+    previewVideo.muted = true;
+    await previewVideo.play();
+  }
+});
+
+document.addEventListener("fullscreenchange", () => {
+  if (!document.fullscreenElement) {
+    previewVideo.muted = true;
+    playVideo();
+  }
+});
+
+document.addEventListener("webkitfullscreenchange", () => {
+  if (!document.webkitFullscreenElement) {
+    previewVideo.muted = true;
+    playVideo();
   }
 });
